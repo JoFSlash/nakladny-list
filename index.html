@@ -4,7 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Chranena stranka</title>
+<title>Chránená stránka</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nákladný list">
+<meta name="theme-color" content="#eef1ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141a1f" media="(prefers-color-scheme: dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
@@ -127,7 +135,7 @@ p.line .who { font-family: var(--font-mono); font-size: .76rem; font-weight: 600
 .ed-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 .ed-msg { font-family: var(--font-mono); font-size: .76rem; color: var(--del-ink); }
 .ed-preview { border: 1px dashed var(--rule); padding: .4rem 1rem .8rem; }
-.ed-preview::before { content: "Nahlad"; display: block; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: .3rem 0; }
+.ed-preview::before { content: "Náhľad"; display: block; font-family: var(--font-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: .3rem 0; }
 .confirm { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .5rem .7rem; background: var(--del-bg); color: var(--del-ink); font-family: var(--font-mono); font-size: .76rem; margin-top: .4rem; }
 
 aside.toc { position: sticky; top: 5rem; align-self: start; max-height: calc(100vh - 6rem); overflow-y: auto; }
@@ -142,6 +150,32 @@ aside.toc summary::-webkit-details-marker, .more > summary::-webkit-details-mark
 .more-panel { position: absolute; right: 0; top: calc(100% + .3rem); z-index: 4; display: grid; gap: .3rem; min-width: 12rem; padding: .4rem; background: var(--sheet); border: 1px solid var(--rule); box-shadow: 0 6px 18px rgba(0, 0, 0, .18); }
 .more-panel .btn { text-align: left; }
 .to-top { display: none; }
+.part.hit { animation: hit 2.4s ease-out; }
+@keyframes hit { from { background: var(--flag-bg); box-shadow: 0 0 0 .6rem var(--flag-bg); } to { background: transparent; box-shadow: 0 0 0 .6rem transparent; } }
+@media (prefers-reduced-motion: reduce) { .part.hit { animation: none; outline: 2px solid var(--flag); } }
+
+/* Pokracovat v citani */
+.resume { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .8rem; margin-bottom: 1.2rem; padding: .6rem .8rem; background: var(--sheet); border: 1px solid var(--stamp); border-left-width: 4px; font-size: .92rem; }
+.resume .txt { flex: 1 1 14rem; min-width: 0; }
+.resume .txt b { font-family: var(--font-head); font-weight: 700; }
+
+/* Hladanie a Na overenie */
+.search-box { display: flex; gap: .5rem; margin: .4rem 0 .6rem; }
+.search-box input { flex: 1; min-width: 0; font: 16px/1.4 var(--font-body); color: var(--ink); background: var(--paper); border: 1px solid var(--stamp); padding: .65rem .75rem; }
+.res-sum { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); margin: .4rem 0 .8rem; }
+.res { display: grid; gap: .2rem; padding: .8rem 0; border-bottom: 1px solid var(--rule); text-decoration: none; }
+.res:hover .t { color: var(--stamp); }
+.res .where { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.res .t { font-family: var(--font-head); font-weight: 700; font-size: 1.1rem; line-height: 1.25; }
+.res .snip { font-size: .92rem; color: var(--muted); overflow-wrap: anywhere; }
+mark.hl { background: var(--flag-bg); color: var(--ink); padding: 0; }
+.ov-group { margin-top: 1.6rem; }
+.ov-item { display: grid; gap: .3rem; padding: .8rem 0; border-bottom: 1px solid var(--rule); }
+.ov-item .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .3rem .8rem; }
+.ov-item .head a { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; text-decoration: none; }
+.ov-item .head a:hover { color: var(--stamp); }
+.ov-item .ctx { margin: 0; font-size: .92rem; overflow-wrap: anywhere; }
+.ov-item .acts { display: flex; flex-wrap: wrap; gap: .4rem; }
 .pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
 .pager a { font-family: var(--font-mono); font-size: .82rem; text-decoration: none; border: 1px solid var(--rule); padding: .6rem .9rem; background: var(--sheet); }
 .pager a:hover { border-color: var(--stamp); }
@@ -188,6 +222,7 @@ aside.toc summary::-webkit-details-marker, .more > summary::-webkit-details-mark
   aside.toc a { padding-block: .7rem; }
   /* Pisma 16 px, aby iOS pri pisani nepriblizoval stranku */
   .editor textarea, .editor .name input, .hist-filters select { font-size: 16px; }
+  .hist-filters select, .editor .name input { min-height: 44px; }
   /* Hlavicka sa pri scrollovani nadol skryje, pri scrollovani nahor sa vrati */
   header.top { transition: transform .2s ease; }
   header.top.away { transform: translateY(-100%); }
@@ -215,14 +250,14 @@ aside.toc summary::-webkit-details-marker, .more > summary::-webkit-details-mark
 
 <div class="lock gutter" id="lock">
   <form id="lockForm" autocomplete="off">
-    <div class="eyebrow">Neverejny dokument</div>
-    <h1>Chraneny obsah</h1>
+    <div class="eyebrow">Neverejný dokument</div>
+    <h1>Chránený obsah</h1>
     <div>
       <label for="pw">Heslo</label>
       <input id="pw" type="password" required autofocus>
     </div>
-    <label class="remember" for="remember"><input id="remember" type="checkbox"> Zapamatat si toto zariadenie</label>
-    <button type="submit" id="unlockBtn">Odomknut</button>
+    <label class="remember" for="remember"><input id="remember" type="checkbox"> Zapamätať si toto zariadenie</label>
+    <button type="submit" id="unlockBtn">Odomknúť</button>
     <p class="err" id="err" role="alert"></p>
   </form>
 </div>
@@ -231,9 +266,9 @@ aside.toc summary::-webkit-details-marker, .more > summary::-webkit-details-mark
   <header class="top gutter">
     <div class="top-in">
       <a class="brand" href="#uvod" id="brand"></a>
-      <nav class="main" id="nav" aria-label="Casti"></nav>
+      <nav class="main" id="nav" aria-label="Časti"></nav>
       <span class="status" id="status"></span>
-      <button class="logout" id="logout" type="button">Zamknut</button>
+      <button class="logout" id="logout" type="button">Zamknúť</button>
     </div>
   </header>
   <main class="gutter" id="view"></main>
@@ -246,11 +281,12 @@ aside.toc summary::-webkit-details-marker, .more > summary::-webkit-details-mark
 
 // ---------- Konfiguracia (bez obsahu; obsah je len v zasifrovanom subore) ----------
 var CONTENT_URL = "data/content.json";
-var AKCIE = { uprava: "Uprava", pridanie: "Nova cast", zmazanie: "Zmazanie", obnova: "Obnovenie", "import": "Import" };
+var AKCIE = { uprava: "Úprava", pridanie: "Nová časť", zmazanie: "Zmazanie", obnova: "Obnovenie", "import": "Import" };
 
 var PASSWORD = null, KEY = null, KEYSALT = null, ENC = null;
 var DATA = null, SHA = null, ONLINE = false;
-var st = { edit: null, confirmDel: null, openDiff: {}, diffCache: {}, filterSek: "", filterPart: "", busy: false, tocOpen: {} };
+var st = { edit: null, confirmDel: null, openDiff: {}, diffCache: {}, filterSek: "", filterPart: "", busy: false, tocOpen: {}, resumeHidden: {}, q: "" };
+var CUR_SEC = null, CUR_PART = "";
 var MOBILE = window.matchMedia("(max-width: 900px)");
 
 // ---------- Kryptografia ----------
@@ -388,7 +424,7 @@ function heading(md) {
 function nadpis(md) {
   var h = heading(md); if (h) return h.t;
   var first = (String(md || "").split("\n").filter(function (l) { return l.trim(); })[0] || "").replace(/[*`#|]/g, "").trim();
-  return first.length > 60 ? first.slice(0, 57) + "…" : (first || "Uvod prilohy");
+  return first.length > 60 ? first.slice(0, 57) + "…" : (first || "Úvod prílohy");
 }
 
 // ---------- Pomocne ----------
@@ -409,11 +445,11 @@ function findPart(data, pid) {
 function setStatus(text, cls) { var s = document.getElementById("status"); s.textContent = text; s.className = "status" + (cls ? " " + cls : ""); }
 function errText(err) {
   var c = err && err.code;
-  if (c === "gh_401" || c === "gh_403") return "GitHub odmietol pristup (token vyprsal alebo nema prava). Napis spravcovi webu.";
-  if (c === "gh_404") return "Subor s obsahom sa v repozitari nenasiel.";
-  if (c === "busy") return "Prave uklada niekto iny. Skus to o chvilu znova.";
-  if (err instanceof TypeError) return "Bez spojenia s GitHubom. Skontroluj internet a skus znova.";
-  return "Ulozenie zlyhalo (" + (c || "neznama chyba") + "). Text je stale v editore.";
+  if (c === "gh_401" || c === "gh_403") return "GitHub odmietol prístup (token vypršal alebo nemá práva). Napíš správcovi webu.";
+  if (c === "gh_404") return "Súbor s obsahom sa v repozitári nenašiel.";
+  if (c === "busy") return "Práve ukladá niekto iný. Skús to o chvíľu znova.";
+  if (err instanceof TypeError) return "Bez spojenia s GitHubom. Skontroluj internet a skús znova.";
+  return "Uloženie zlyhalo (" + (c || "neznáma chyba") + "). Text je stále v editore.";
 }
 
 // ---------- Odomknutie ----------
@@ -426,7 +462,7 @@ async function unlock(password, quiet, persistent) {
     var payload = await r.json();
     PASSWORD = password; KEY = null;
     try { DATA = await decryptPayload(payload); }
-    catch (e) { PASSWORD = null; forget(); if (!quiet) err.textContent = "Nespravne heslo. Skuste to znova."; return; }
+    catch (e) { PASSWORD = null; forget(); if (!quiet) err.textContent = "Nesprávne heslo. Skúste to znova."; return; }
     if (persistent !== undefined) remember(password, persistent);
     document.getElementById("lock").hidden = true;
     document.getElementById("app").hidden = false;
@@ -435,29 +471,159 @@ async function unlock(password, quiet, persistent) {
     buildNav(); route();
     goOnline();
   } catch (e) {
-    if (!quiet) err.textContent = "Obsah sa nepodarilo nacitat. Skontroluj internet a skus znova.";
-  } finally { b.disabled = false; b.textContent = "Odomknut"; }
+    if (!quiet) err.textContent = "Obsah sa nepodarilo načítať. Skontroluj internet a skús znova.";
+  } finally { b.disabled = false; b.textContent = "Odomknúť"; }
 }
 async function goOnline() {
-  if (!DATA.gh || !DATA.gh.token) { setStatus("Len na citanie", "warn"); return; }
-  setStatus("Nacitavam najnovsiu verziu…");
+  if (!DATA.gh || !DATA.gh.token) { setStatus("Len na čítanie", "warn"); return; }
+  setStatus("Načítavam najnovšiu verziu…");
   try {
     var latest = await readFileAt(DATA.gh.branch);
     DATA = keepToken(latest.data); SHA = latest.sha; ONLINE = true;
-    setStatus("Mozes upravovat", "ok");
+    setStatus("Môžeš upravovať", "ok");
     if (!st.edit) route(true);
   } catch (e) {
     ONLINE = false;
-    setStatus(e && (e.code === "gh_401" || e.code === "gh_403") ? "Len na citanie: token pre GitHub nefunguje" : "Len na citanie: GitHub je nedostupny", "warn");
+    setStatus(e && (e.code === "gh_401" || e.code === "gh_403") ? "Len na čítanie: token pre GitHub nefunguje" : "Len na čítanie: GitHub je nedostupný", "warn");
   }
 }
 
 // ---------- Vykreslenie ----------
 function buildNav() {
   var nav = document.getElementById("nav"); nav.textContent = "";
-  var a0 = el("a", null, "Uvod"); a0.href = "#uvod"; nav.appendChild(a0);
+  var a0 = el("a", null, "Úvod"); a0.href = "#uvod"; nav.appendChild(a0);
+  var aq = el("a", null, "Hľadať"); aq.href = "#hladat"; nav.appendChild(aq);
   DATA.sections.forEach(function (s) { var a = el("a", null, s.label); a.href = "#" + s.id; nav.appendChild(a); });
-  var ah = el("a", null, "Historia"); ah.href = "#historia"; nav.appendChild(ah);
+  var ao = el("a"); ao.href = "#overit"; ao.id = "navOverit"; nav.appendChild(ao);
+  var ah = el("a", null, "História"); ah.href = "#historia"; nav.appendChild(ah);
+}
+
+// ---------- Odkaz na cast ----------
+function partUrl(sid, pid) { return location.href.split("#")[0] + "#" + sid + "/" + pid; }
+function shareLink(s, p, b) {
+  var url = partUrl(s.id, p.id), label = b.textContent;
+  var done = function (t) { b.textContent = t; setTimeout(function () { b.textContent = label; }, 1600); };
+  if (MOBILE.matches && navigator.share) { navigator.share({ title: nadpis(p.md), url: url }).catch(function () {}); return; }
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(function () { done("Skopírované ✓"); }, function () { window.prompt("Skopíruj odkaz:", url); });
+  else window.prompt("Skopíruj odkaz:", url);
+}
+
+// ---------- Pokracovat v citani (pamata si to len toto zariadenie) ----------
+function loadPos() { try { return JSON.parse(localStorage.getItem("nl-pos") || "{}") || {}; } catch (e) { return {}; } }
+function savePos(sid, pid) { var p = loadPos(); if (p[sid] === pid) return; p[sid] = pid; try { localStorage.setItem("nl-pos", JSON.stringify(p)); } catch (e) {} }
+function goToPart(pid) {
+  var t = document.getElementById("p-" + pid); if (!t) return;
+  if (MOBILE.matches) header.classList.add("away");
+  t.scrollIntoView({ behavior: "instant", block: "start" });
+  t.classList.remove("hit"); void t.offsetWidth; t.classList.add("hit");
+}
+
+// ---------- Hladanie ----------
+function fold(t) { return t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+function plainText(md) {
+  return String(md || "").split("\n").map(function (l) {
+    return l.replace(/^#{1,4}\s+/, "").replace(/^\s*(- |\d+\. )/, "").replace(/^\|.*-{3,}.*\|$/, "").replace(/[*`]/g, "").replace(/\|/g, " · ").trim();
+  }).filter(Boolean).join(" ¶ ");
+}
+var searchIdx = null, searchIdxFor = null;
+function searchIndex() {
+  if (searchIdxFor === DATA) return searchIdx;
+  searchIdx = [];
+  DATA.sections.forEach(function (s, si) {
+    s.parts.forEach(function (p) {
+      var text = plainText(p.md), f = "", map = [];
+      for (var k = 0; k < text.length; k++) { var c = fold(text[k]); for (var j = 0; j < c.length; j++) { f += c[j]; map.push(k); } }
+      map.push(text.length);
+      searchIdx.push({ s: s, si: si, p: p, text: text, f: f, map: map });
+    });
+  });
+  searchIdxFor = DATA; return searchIdx;
+}
+function snippet(it, words) {
+  var first = it.f.indexOf(words[0]), a = Math.max(0, it.map[first] - 70), b = Math.min(it.text.length, it.map[first] + words[0].length + 110);
+  var ranges = [];
+  words.forEach(function (w) { var k = -1; while ((k = it.f.indexOf(w, k + 1)) >= 0) { var x = it.map[k], y = it.map[k + w.length]; if (y > a && x < b) ranges.push([Math.max(x, a), Math.min(y, b)]); } });
+  ranges.sort(function (r1, r2) { return r1[0] - r2[0]; });
+  var html = a > 0 ? "…" : "", pos = a;
+  ranges.forEach(function (r) { if (r[0] < pos) return; html += esc(it.text.slice(pos, r[0])) + '<mark class="hl">' + esc(it.text.slice(r[0], r[1])) + "</mark>"; pos = r[1]; });
+  return html + esc(it.text.slice(pos, b)) + (b < it.text.length ? "…" : "");
+}
+function renderResults(box, q) {
+  box.textContent = "";
+  var words = fold(q).split(/\s+/).filter(function (w) { return w.length >= 2; });
+  if (!words.length) { box.appendChild(el("p", "res-sum", "Napíš aspoň dve písmená. Na diakritike nezáleží.")); return; }
+  var hits = searchIndex().filter(function (it) { return words.every(function (w) { return it.f.indexOf(w) >= 0; }); });
+  box.appendChild(el("p", "res-sum", hits.length ? "Nájdené v " + hits.length + (hits.length === 1 ? " časti" : " častiach") : "Nič sa nenašlo."));
+  hits.slice(0, 100).forEach(function (it) {
+    var a = el("a", "res"); a.href = "#" + it.s.id + "/" + it.p.id;
+    a.appendChild(el("span", "where", "Príloha č. " + (it.si + 1) + " · " + it.s.label));
+    a.appendChild(el("span", "t", nadpis(it.p.md)));
+    var sn = el("span", "snip"); sn.innerHTML = snippet(it, words); a.appendChild(sn);
+    box.appendChild(a);
+  });
+  if (hits.length > 100) box.appendChild(el("p", "res-sum", "Zobrazených je prvých 100. Spresni hľadanie."));
+}
+function renderSearch(view) {
+  var doc = el("article", "doc");
+  var head = el("header", "doc-head"); head.appendChild(el("span", "tab", "Hľadanie")); head.appendChild(el("span", null, "celý spis"));
+  doc.appendChild(head); doc.appendChild(el("h2", null, "Hľadať v spise"));
+  var form = el("form", "search-box"); form.setAttribute("role", "search");
+  var inp = el("input"); inp.type = "search"; inp.id = "q"; inp.placeholder = "Meno, rok, miesto…"; inp.autocomplete = "off"; inp.value = st.q || "";
+  inp.setAttribute("aria-label", "Hľadaný text"); inp.setAttribute("enterkeyhint", "search");
+  form.appendChild(inp); doc.appendChild(form);
+  var box = el("div"); box.setAttribute("aria-live", "polite"); doc.appendChild(box);
+  var tmr = null;
+  inp.addEventListener("input", function () { st.q = inp.value; clearTimeout(tmr); tmr = setTimeout(function () { renderResults(box, st.q); }, 120); });
+  form.addEventListener("submit", function (e) { e.preventDefault(); inp.blur(); });
+  renderResults(box, st.q || "");
+  view.appendChild(doc);
+  if (!st.q) setTimeout(function () { inp.focus({ preventScroll: true }); }, 0);
+}
+
+// ---------- Na overenie ----------
+var OV_RE = /\[OVERI[TŤ][^\]]*\]/;
+function overitList() {
+  var out = [];
+  DATA.sections.forEach(function (s, si) {
+    s.parts.forEach(function (p) {
+      String(p.md || "").split("\n").forEach(function (l) {
+        if (OV_RE.test(l)) out.push({ s: s, si: si, p: p, line: l.replace(/^#{1,4}\s+/, "").replace(/^\s*(- |\d+\. )/, "").trim() });
+      });
+    });
+  });
+  return out;
+}
+function renderOverit(view) {
+  var list = overitList(), doc = el("article", "doc");
+  var head = el("header", "doc-head"); head.appendChild(el("span", "tab", "Na overenie")); head.appendChild(el("span", null, list.length + " značiek"));
+  doc.appendChild(head); doc.appendChild(el("h2", null, "Na overenie"));
+  doc.appendChild(el("p", null, "Všetky miesta so značkou [OVERIT …]. Keď niečo overíš, uprav časť a značku z textu zmaž. Z tohto zoznamu potom zmizne."));
+  if (!list.length) doc.appendChild(el("p", "notice", "Nič nečaká na overenie."));
+  var lastSec = null, grp = null;
+  list.forEach(function (it) {
+    if (it.s !== lastSec) {
+      grp = el("section", "ov-group"); lastSec = it.s;
+      var n = list.filter(function (x) { return x.s === it.s; }).length;
+      grp.appendChild(el("h3", null, "Príloha č. " + (it.si + 1) + " · " + it.s.label + " (" + n + ")"));
+      doc.appendChild(grp);
+    }
+    var row = el("div", "ov-item"), hd = el("div", "head");
+    var a = el("a", null, nadpis(it.p.md)); a.href = "#" + it.s.id + "/" + it.p.id; hd.appendChild(a);
+    if (ONLINE) {
+      var acts = el("div", "acts");
+      acts.appendChild(btn("Upraviť", "", function () { openEdit(it.s, it.p); }, !!st.edit || st.busy));
+      hd.appendChild(acts);
+    }
+    row.appendChild(hd);
+    var ctx = el("p", "ctx"); ctx.innerHTML = inline(it.line); row.appendChild(ctx);
+    grp.appendChild(row);
+  });
+  view.appendChild(doc);
+}
+function openEdit(s, p) {
+  st.confirmDel = null;
+  st.edit = { pid: p.id, sid: s.id, isNew: false, base: p.md, draft: p.md, name: getName(), preview: false };
+  location.hash = s.id + "/" + p.id;
 }
 
 function renderHome(view) {
@@ -476,12 +642,20 @@ function renderHome(view) {
   var cards = el("div", "cards");
   DATA.sections.forEach(function (s, i) {
     var a = el("a", "card"); a.href = "#" + s.id;
-    a.appendChild(el("span", "no", "Priloha c. " + (i + 1))); a.appendChild(el("span", "t", s.title)); a.appendChild(el("span", "d", s.blurb));
+    a.appendChild(el("span", "no", "Príloha č. " + (i + 1))); a.appendChild(el("span", "t", s.title)); a.appendChild(el("span", "d", s.blurb));
     cards.appendChild(a);
   });
+  var nOv = overitList().length, ao = el("a", "card"); ao.href = "#overit";
+  ao.appendChild(el("span", "no", "Na overenie")); ao.appendChild(el("span", "t", nOv + (nOv === 1 ? " značka" : nOv >= 2 && nOv <= 4 ? " značky" : " značiek") + " [OVERIT]"));
+  ao.appendChild(el("span", "d", "Všetky miesta, ktoré treba overiť, na jednom mieste s odkazom na časť."));
+  cards.appendChild(ao);
+  var aq = el("a", "card"); aq.href = "#hladat";
+  aq.appendChild(el("span", "no", "Hľadanie")); aq.appendChild(el("span", "t", "Hľadať v spise"));
+  aq.appendChild(el("span", "d", "Mená, roky, miesta v celom texte. Na diakritike nezáleží."));
+  cards.appendChild(aq);
   var ah = el("a", "card"); ah.href = "#historia";
-  ah.appendChild(el("span", "no", "Kniha zapisov")); ah.appendChild(el("span", "t", "Historia zmien"));
-  ah.appendChild(el("span", "d", (DATA.log || []).length + " zapisov: kto, co a kedy zmenil, s moznostou vratit zmenu."));
+  ah.appendChild(el("span", "no", "Kniha zápisov")); ah.appendChild(el("span", "t", "História zmien"));
+  ah.appendChild(el("span", "d", (DATA.log || []).length + " zápisov: kto, čo a kedy zmenil, s možnosťou vrátiť zmenu."));
   cards.appendChild(ah);
   view.appendChild(cards);
   view.appendChild(el("p", "foot", h.foot));
@@ -489,9 +663,9 @@ function renderHome(view) {
 
 function renderSection(view, s, i) {
   var page = el("div", "page"), doc = el("article", "doc");
-  var head = el("header", "doc-head"); head.appendChild(el("span", "tab", "Priloha c. " + (i + 1))); head.appendChild(el("span", null, s.file));
+  var head = el("header", "doc-head"); head.appendChild(el("span", "tab", "Príloha č. " + (i + 1))); head.appendChild(el("span", null, s.file));
   doc.appendChild(head); doc.appendChild(el("h2", null, s.title));
-  if (!s.parts.length && !(st.edit && st.edit.isNew && st.edit.sid === s.id)) doc.appendChild(el("p", "notice", "Tato priloha je zatial prazdna."));
+  if (!s.parts.length && !(st.edit && st.edit.isNew && st.edit.sid === s.id)) doc.appendChild(el("p", "notice", "Táto príloha je zatiaľ prázdna."));
   s.parts.forEach(function (p) {
     doc.appendChild(renderPart(s, p));
     if (st.edit && st.edit.isNew && st.edit.afterId === p.id) doc.appendChild(wrapEditor());
@@ -499,13 +673,13 @@ function renderSection(view, s, i) {
   if (st.edit && st.edit.isNew && st.edit.sid === s.id && st.edit.afterId === null) doc.appendChild(wrapEditor());
   if (ONLINE) {
     var last = s.parts[s.parts.length - 1];
-    var add = btn("+ Pridat cast na koniec prilohy", "add-end", function () { startNew(s.id, last ? last.id : null); }, !!st.edit || st.busy);
+    var add = btn("+ Pridať časť na koniec prílohy", "add-end", function () { startNew(s.id, last ? last.id : null); }, !!st.edit || st.busy);
     doc.appendChild(add);
   }
   page.appendChild(doc);
   // Obsah stranky: na pocitaci vzdy otvoreny, na mobile zbaleny (kym ho clovek neotvori)
   var toc = el("aside", "toc"), any = false, det = el("details");
-  det.appendChild(el("summary", "lbl", "Na tejto stranke"));
+  det.appendChild(el("summary", "lbl", "Na tejto stránke"));
   det.open = !MOBILE.matches || !!st.tocOpen[s.id];
   det.addEventListener("toggle", function () { if (MOBILE.matches) st.tocOpen[s.id] = det.open; });
   toc.appendChild(det);
@@ -514,10 +688,19 @@ function renderSection(view, s, i) {
     var a = el("a", "l" + h.l, h.t); a.href = "#" + s.id; a.setAttribute("data-target", "p-" + p.id); det.appendChild(a); any = true;
   });
   page.appendChild(any ? toc : el("div"));
+  // Pokracovat tam, kde clovek naposledy cital (nie pri priamom odkaze na cast)
+  var posId = loadPos()[s.id], posPart = posId && s.parts.find(function (p) { return p.id === posId; });
+  if (!CUR_PART && posPart && posPart !== s.parts[0] && !st.edit && !st.resumeHidden[s.id]) {
+    var rb = el("div", "resume"), tx = el("span", "txt", "Naposledy si čítal: ");
+    tx.appendChild(el("b", null, nadpis(posPart.md))); rb.appendChild(tx);
+    rb.appendChild(btn("Pokračovať →", "primary", function () { st.resumeHidden[s.id] = true; rb.remove(); goToPart(posId); }));
+    var x = btn("×", "", function () { st.resumeHidden[s.id] = true; rb.remove(); }); x.setAttribute("aria-label", "Skryť"); rb.appendChild(x);
+    view.appendChild(rb);
+  }
   view.appendChild(page);
-  var pager = el("nav", "pager"); pager.setAttribute("aria-label", "Dalsie casti");
+  var pager = el("nav", "pager"); pager.setAttribute("aria-label", "Ďalšie časti");
   var prev = DATA.sections[i - 1], next = DATA.sections[i + 1];
-  var pa = el("a", null, prev ? "← " + prev.label : "← Uvod"); pa.href = prev ? "#" + prev.id : "#uvod"; pager.appendChild(pa);
+  var pa = el("a", null, prev ? "← " + prev.label : "← Úvod"); pa.href = prev ? "#" + prev.id : "#uvod"; pager.appendChild(pa);
   if (next) { var na = el("a", null, next.label + " →"); na.href = "#" + next.id; pager.appendChild(na); }
   view.appendChild(pager);
 }
@@ -529,36 +712,43 @@ function renderPart(s, p) {
   if (st.edit && !st.edit.isNew && st.edit.pid === p.id) { art.appendChild(renderEditor()); return art; }
   var body = el("div"); body.innerHTML = md2html(p.md); art.appendChild(body);
   var tools = el("div", "tools"), last = logFor(p.id)[0];
-  tools.appendChild(el("span", "who-line", last ? "Naposledy: " + (last.kto || "?") + " · " + fmtShort(last.t) : "Z povodneho spisu"));
+  tools.appendChild(el("span", "who-line", last ? "Naposledy: " + (last.kto || "?") + " · " + fmtShort(last.t) : "Z pôvodného spisu"));
   var n = logFor(p.id).length;
   var goHist = function () { st.filterPart = p.id; st.filterSek = ""; location.hash = "historia"; };
-  var histLabel = "Historia" + (n ? " (" + n + ")" : "");
+  var histLabel = "História" + (n ? " (" + n + ")" : "");
   if (ONLINE) {
     var dis = !!st.edit || st.busy;
     var doNew = function () { startNew(s.id, p.id); }, doDel = function () { st.confirmDel = p.id; route(true); };
     // Na pocitaci vsetky tlacidla vedla seba; na mobile (x-wide skryte) len Upravit a menu ⋯
     tools.appendChild(btn(histLabel, "x-wide", goHist));
-    tools.appendChild(btn("Upravit", "", function () { startEdit(s, p); }, dis));
-    tools.appendChild(btn("+ Pridat pod", "x-wide", doNew, dis));
-    tools.appendChild(btn("Zmazat", "danger x-wide", doDel, dis));
+    tools.appendChild(btn("Upraviť", "", function () { startEdit(s, p); }, dis));
+    tools.appendChild(btn("+ Pridať pod", "x-wide", doNew, dis));
+    tools.appendChild(btn("Zmazať", "danger x-wide", doDel, dis));
     var more = el("details", "more"), sum = el("summary", "btn", "⋯"), panel = el("div", "more-panel");
-    sum.setAttribute("aria-label", "Dalsie moznosti");
+    sum.setAttribute("aria-label", "Ďalšie možnosti");
+    var linkW = btn("Odkaz", "x-wide", function () { shareLink(s, p, linkW); });
+    tools.insertBefore(linkW, tools.children[1]);
+    var shareLbl = MOBILE.matches && navigator.share ? "Zdieľať odkaz" : "Kopírovať odkaz";
+    var linkM = btn(shareLbl, "", function () { shareLink(s, p, linkM); });
+    panel.appendChild(linkM);
     panel.appendChild(btn(histLabel, "", goHist));
-    panel.appendChild(btn("+ Pridat pod", "", doNew, dis));
-    panel.appendChild(btn("Zmazat", "danger", doDel, dis));
+    panel.appendChild(btn("+ Pridať pod", "", doNew, dis));
+    panel.appendChild(btn("Zmazať", "danger", doDel, dis));
     more.appendChild(sum); more.appendChild(panel); tools.appendChild(more);
   } else {
+    var linkR = btn("Odkaz", "", function () { shareLink(s, p, linkR); });
+    tools.appendChild(linkR);
     tools.appendChild(btn(histLabel, "", goHist));
   }
   art.appendChild(tools);
   if (st.confirmDel === p.id) {
     var c = el("div", "confirm");
-    c.appendChild(el("span", null, "Zmazat cast „" + nadpis(p.md) + "“? Ostane v historii a da sa obnovit."));
+    c.appendChild(el("span", null, "Zmazať časť „" + nadpis(p.md) + "“? Ostane v histórii a dá sa obnoviť."));
     var nameIn = el("input"); nameIn.id = "delName"; nameIn.placeholder = "Tvoje meno"; nameIn.value = getName();
-    nameIn.setAttribute("aria-label", "Tvoje meno do historie"); nameIn.style.cssText = "font:inherit;padding:.25rem .4rem;border:1px solid currentColor;background:var(--paper);color:var(--ink)";
+    nameIn.setAttribute("aria-label", "Tvoje meno do histórie"); nameIn.style.cssText = "font:inherit;padding:.25rem .4rem;border:1px solid currentColor;background:var(--paper);color:var(--ink)";
     c.appendChild(nameIn);
-    c.appendChild(btn("Zmazat", "danger solid", function () { zmazat(s, p, nameIn.value.trim()); }, st.busy));
-    c.appendChild(btn("Nechat", "", function () { st.confirmDel = null; route(true); }));
+    c.appendChild(btn("Zmazať", "danger solid", function () { zmazat(s, p, nameIn.value.trim()); }, st.busy));
+    c.appendChild(btn("Nechať", "", function () { st.confirmDel = null; route(true); }));
     var cm = el("span", null, st.delMsg || ""); c.appendChild(cm);
     art.appendChild(c);
   }
@@ -569,7 +759,7 @@ function wrapEditor() { var d = el("div", "part"); d.appendChild(renderEditor())
 
 function renderEditor() {
   var e = st.edit, box = el("div", "editor"), id = "ed-" + (e.isNew ? "new" : e.pid);
-  var lab = el("label", null, e.isNew ? "Nova cast · Markdown" : "Uprava casti · Markdown"); lab.htmlFor = id;
+  var lab = el("label", null, e.isNew ? "Nová časť · Markdown" : "Úprava časti · Markdown"); lab.htmlFor = id;
   var ta = el("textarea"); ta.id = id; ta.value = e.draft; ta.rows = Math.min(30, Math.max(8, e.draft.split("\n").length + 2));
   ta.addEventListener("input", function () { e.draft = ta.value; var pv = box.querySelector(".ed-preview"); if (pv) pv.innerHTML = md2html(e.draft); });
   ta.addEventListener("keydown", function (ev) {
@@ -577,18 +767,18 @@ function renderEditor() {
     if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); ulozit(false); }
   });
   box.appendChild(lab); box.appendChild(ta);
-  box.appendChild(el("div", "ed-help", "## nadpis · ### podnadpis · - odrazka · 1. bod · **tucne** · *kurziva* · | tabulka | · [OVERIT …] · Ctrl+Enter ulozi, Esc zrusi"));
-  var nm = el("div", "name"), nl = el("label", null, "Tvoje meno do historie"); nl.htmlFor = "edName";
+  box.appendChild(el("div", "ed-help", "## nadpis · ### podnadpis · - odrážka · 1. bod · **tučné** · *kurzíva* · | tabuľka | · [OVERIT …] · Ctrl+Enter uloží, Esc zruší"));
+  var nm = el("div", "name"), nl = el("label", null, "Tvoje meno do histórie"); nl.htmlFor = "edName";
   var ni = el("input"); ni.id = "edName"; ni.value = e.name; ni.autocomplete = "name";
   ni.addEventListener("input", function () { e.name = ni.value; });
   nm.appendChild(nl); nm.appendChild(ni); box.appendChild(nm);
   var acts = el("div", "ed-actions");
-  acts.appendChild(btn(e.saving ? "Ukladam…" : "Ulozit", "primary", function () { ulozit(false); }, e.saving));
-  acts.appendChild(btn(e.preview ? "Skryt nahlad" : "Nahlad", "", function () { e.preview = !e.preview; route(true); }));
-  acts.appendChild(btn("Zrusit", "", zrusit, e.saving));
+  acts.appendChild(btn(e.saving ? "Ukladám…" : "Uložiť", "primary", function () { ulozit(false); }, e.saving));
+  acts.appendChild(btn(e.preview ? "Skryť náhľad" : "Náhľad", "", function () { e.preview = !e.preview; route(true); }));
+  acts.appendChild(btn("Zrušiť", "", zrusit, e.saving));
   if (e.conflict) {
-    acts.appendChild(btn("Prepisat aj tak", "danger", function () { ulozit(true); }, e.saving));
-    acts.appendChild(btn("Zahodit moj text", "", function () { st.edit = null; route(true); }));
+    acts.appendChild(btn("Prepísať aj tak", "danger", function () { ulozit(true); }, e.saving));
+    acts.appendChild(btn("Zahodiť môj text", "", function () { st.edit = null; route(true); }));
   }
   acts.appendChild(el("span", "ed-msg", e.msg || ""));
   box.appendChild(acts);
@@ -604,7 +794,7 @@ function startEdit(s, p) {
 }
 function startNew(sid, afterId) {
   st.confirmDel = null;
-  st.edit = { pid: null, sid: sid, afterId: afterId, isNew: true, base: null, draft: "### Nova cast\n\n", name: getName(), preview: false };
+  st.edit = { pid: null, sid: sid, afterId: afterId, isNew: true, base: null, draft: "### Nová časť\n\n", name: getName(), preview: false };
   route(true); focusEditor(4, 13);
 }
 function focusEditor(a, b) {
@@ -615,8 +805,8 @@ function zrusit() { st.edit = null; route(true); }
 async function ulozit(force) {
   var e = st.edit; if (!e || e.saving) return;
   var text = e.draft.replace(/\s+$/, ""), name = (e.name || "").trim();
-  if (!name) { e.msg = "Napis svoje meno, zapise sa do historie."; route(true); document.getElementById("edName").focus(); return; }
-  if (!text.trim()) { e.msg = "Prazdnu cast nemozno ulozit. Ak ju chces odstranit, pouzi Zmazat."; route(true); return; }
+  if (!name) { e.msg = "Napíš svoje meno, zapíše sa do histórie."; route(true); document.getElementById("edName").focus(); return; }
+  if (!text.trim()) { e.msg = "Prázdnu časť nemožno uložiť. Ak ju chceš odstrániť, použi Zmazať."; route(true); return; }
   setName(name); e.saving = true; e.msg = ""; st.busy = true; route(true);
   try {
     if (e.isNew) {
@@ -633,11 +823,11 @@ async function ulozit(force) {
         else { var sec = findSec(data, e.sid); sec.parts.push({ id: e.pid, md: text }); }
       }, { akcia: "uprava", kto: name, sekcia: e.sid, cast: e.pid, nadpis: nadpis(text) });
     }
-    st.edit = null; st.busy = false; setStatus("Ulozene", "ok"); route(true);
+    st.edit = null; st.busy = false; setStatus("Uložené", "ok"); route(true);
   } catch (err) {
     st.busy = false; e.saving = false;
     if (err && err.code === "conflict") {
-      e.conflict = true; e.msg = "Medzitym tuto cast zmenil niekto iny. Tvoj text je stale v editore.";
+      e.conflict = true; e.msg = "Medzitým túto časť zmenil niekto iný. Tvoj text je stále v editore.";
       DATA = keepToken(err.data);
     } else e.msg = errText(err);
     route(true);
@@ -645,14 +835,14 @@ async function ulozit(force) {
 }
 
 async function zmazat(s, p, name) {
-  if (!name) { st.delMsg = "Napis svoje meno."; route(true); return; }
-  setName(name); st.busy = true; st.delMsg = "Mazem…"; route(true);
+  if (!name) { st.delMsg = "Napíš svoje meno."; route(true); return; }
+  setName(name); st.busy = true; st.delMsg = "Mažem…"; route(true);
   try {
     await commitChange(function (data) {
       var f = findPart(data, p.id); if (f) f.sec.parts.splice(f.idx, 1);
     }, { akcia: "zmazanie", kto: name, sekcia: s.id, cast: p.id, nadpis: nadpis(p.md) });
-    st.confirmDel = null; st.delMsg = ""; setStatus("Zmazane", "ok");
-  } catch (err) { st.delMsg = errText(err).replace(" Text je stale v editore.", ""); }
+    st.confirmDel = null; st.delMsg = ""; setStatus("Zmazané", "ok");
+  } catch (err) { st.delMsg = errText(err).replace(" Text je stále v editore.", ""); }
   st.busy = false; route(true);
 }
 
@@ -708,7 +898,7 @@ function renderDiff(d) {
       var run = ops.slice(k, r), head = k > 0 ? 2 : 0, tail = r < ops.length ? 2 : 0;
       if (run.length > head + tail + 1) {
         run.slice(0, head).forEach(function (o) { box.appendChild(el("div", "same", o.s || " ")); });
-        box.appendChild(el("div", "gap", "… " + (run.length - head - tail) + " nezmenenych riadkov …"));
+        box.appendChild(el("div", "gap", "… " + (run.length - head - tail) + " nezmenených riadkov …"));
         run.slice(run.length - tail).forEach(function (o) { box.appendChild(el("div", "same", o.s || " ")); });
       } else run.forEach(function (o) { box.appendChild(el("div", "same", o.s || " ")); });
       k = r;
@@ -718,7 +908,7 @@ function renderDiff(d) {
 }
 async function obnovit(entry) {
   var name = getName();
-  if (!name) { st.histMsg = "Najprv zadaj meno pri niektorej uprave alebo zmazani."; route(true); return; }
+  if (!name) { st.histMsg = "Najprv zadaj meno pri niektorej úprave alebo zmazaní."; route(true); return; }
   st.busy = true; st.histMsg = "Obnovujem…"; route(true);
   try {
     var d = await loadDiff(entry);
@@ -728,33 +918,33 @@ async function obnovit(entry) {
       if (f) { f.part.md = d.pred; return; }
       var sec = findSec(data, d.sid) || data.sections[0], at = sec.parts.findIndex(function (p) { return p.id === d.prevId; });
       sec.parts.splice(at < 0 ? 0 : at + 1, 0, { id: entry.cast, md: d.pred });
-    }, { akcia: "obnova", kto: name, sekcia: d.sid, cast: entry.cast, nadpis: nadpis(d.pred), poznamka: "Vrateny stav spred zmeny z " + fmtShort(entry.t) + "." });
-    st.histMsg = "Obnovene."; st.busy = false;
-    location.hash = d.sid; setTimeout(function () { var a = document.getElementById("p-" + entry.cast); if (a) a.scrollIntoView(); }, 80);
-  } catch (err) { st.busy = false; st.histMsg = err && err.code === "nothing" ? "Nie je co obnovit." : errText(err).replace(" Text je stale v editore.", ""); route(true); }
+    }, { akcia: "obnova", kto: name, sekcia: d.sid, cast: entry.cast, nadpis: nadpis(d.pred), poznamka: "Vrátený stav spred zmeny z " + fmtShort(entry.t) + "." });
+    st.histMsg = "Obnovené."; st.busy = false;
+    location.hash = d.sid + "/" + entry.cast;
+  } catch (err) { st.busy = false; st.histMsg = err && err.code === "nothing" ? "Nie je čo obnoviť." : errText(err).replace(" Text je stále v editore.", ""); route(true); }
 }
 
 function renderHistory(view) {
   var doc = el("article", "doc");
-  var head = el("header", "doc-head"); head.appendChild(el("span", "tab", "Kniha zapisov")); head.appendChild(el("span", null, "historia zmien"));
-  doc.appendChild(head); doc.appendChild(el("h2", null, "Historia zmien"));
-  doc.appendChild(el("p", null, "Kazdy zapis hovori, kto co zmenil a kedy. Pri uprave a zmazani sa da vratit stav spred zmeny."));
-  var f = el("div", "hist-filters"), lab = el("label", null, "Priloha"); lab.htmlFor = "fSek";
+  var head = el("header", "doc-head"); head.appendChild(el("span", "tab", "Kniha zápisov")); head.appendChild(el("span", null, "história zmien"));
+  doc.appendChild(head); doc.appendChild(el("h2", null, "História zmien"));
+  doc.appendChild(el("p", null, "Každý zápis hovorí, kto čo zmenil a kedy. Pri úprave a zmazaní sa dá vrátiť stav spred zmeny."));
+  var f = el("div", "hist-filters"), lab = el("label", null, "Príloha"); lab.htmlFor = "fSek";
   var sel = el("select"); sel.id = "fSek";
-  var o0 = el("option", null, "Vsetky prilohy"); o0.value = ""; sel.appendChild(o0);
+  var o0 = el("option", null, "Všetky prílohy"); o0.value = ""; sel.appendChild(o0);
   DATA.sections.forEach(function (s, i) { var o = el("option", null, (i + 1) + ". " + s.title); o.value = s.id; sel.appendChild(o); });
   sel.value = st.filterSek;
   sel.addEventListener("change", function () { st.filterSek = sel.value; st.filterPart = ""; route(true); });
   f.appendChild(lab); f.appendChild(sel);
   if (st.filterPart) {
     var fp = findPart(DATA, st.filterPart), hit = logFor(st.filterPart)[0];
-    f.appendChild(el("span", null, "Len cast: " + (fp ? nadpis(fp.part.md) : hit ? hit.nadpis : "")));
-    f.appendChild(btn("Zobrazit vsetko", "", function () { st.filterPart = ""; route(true); }));
+    f.appendChild(el("span", null, "Len časť: " + (fp ? nadpis(fp.part.md) : hit ? hit.nadpis : "")));
+    f.appendChild(btn("Zobraziť všetko", "", function () { st.filterPart = ""; route(true); }));
   }
   if (st.histMsg) f.appendChild(el("span", "notice", st.histMsg));
   doc.appendChild(f);
   var list = (DATA.log || []).filter(function (h) { return st.filterPart ? h.cast === st.filterPart : st.filterSek ? h.sekcia === st.filterSek : true; });
-  if (!list.length) doc.appendChild(el("p", "notice", "Zatial tu nie je ziadny zapis."));
+  if (!list.length) doc.appendChild(el("p", "notice", "Zatiaľ tu nie je žiadny zápis."));
   var lastDay = "";
   list.forEach(function (h) {
     var day = fmtDate(h.t); if (day !== lastDay) { doc.appendChild(el("div", "hist-day", day)); lastDay = day; }
@@ -764,27 +954,26 @@ function renderHistory(view) {
     l1.appendChild(el("span", "pill act-" + h.akcia, AKCIE[h.akcia] || h.akcia));
     if (h.nadpis) l1.appendChild(el("span", "title", h.nadpis));
     var sec = h.sekcia && findSec(DATA, h.sekcia);
-    if (sec) l1.appendChild(el("span", "where", "Priloha c. " + (DATA.sections.indexOf(sec) + 1)));
+    if (sec) l1.appendChild(el("span", "where", "Príloha č. " + (DATA.sections.indexOf(sec) + 1)));
     w.appendChild(l1);
     if (h.poznamka) w.appendChild(el("div", "note", h.poznamka));
     var acts = el("div", "acts");
     if (h.akcia !== "import" && ONLINE) {
-      acts.appendChild(btn(st.openDiff[h.id] ? "Skryt zmeny" : "Zobrazit zmeny", "", function () {
+      acts.appendChild(btn(st.openDiff[h.id] ? "Skryť zmeny" : "Zobraziť zmeny", "", function () {
         st.openDiff[h.id] = !st.openDiff[h.id]; route(true);
         if (st.openDiff[h.id] && !st.diffCache[h.id]) loadDiff(h).then(function () { route(true); }, function () { st.diffCache[h.id] = { err: true }; route(true); });
       }));
       if (h.akcia === "uprava" || h.akcia === "zmazanie" || h.akcia === "obnova")
-        acts.appendChild(btn(h.akcia === "zmazanie" ? "Obnovit zmazanu cast" : "Vratit stav spred tejto zmeny", "", function () { obnovit(h); }, st.busy || !!st.edit));
+        acts.appendChild(btn(h.akcia === "zmazanie" ? "Obnoviť zmazanú časť" : "Vrátiť stav spred tejto zmeny", "", function () { obnovit(h); }, st.busy || !!st.edit));
     }
-    if (findPart(DATA, h.cast)) acts.appendChild(btn("Ukazat v spise", "", function () {
-      var f2 = findPart(DATA, h.cast); location.hash = f2.sec.id;
-      setTimeout(function () { var a = document.getElementById("p-" + h.cast); if (a) a.scrollIntoView(); }, 80);
+    if (findPart(DATA, h.cast)) acts.appendChild(btn("Ukázať v spise", "", function () {
+      var f2 = findPart(DATA, h.cast); location.hash = f2.sec.id + "/" + h.cast;
     }));
     if (acts.childNodes.length) w.appendChild(acts);
     if (st.openDiff[h.id]) {
       var d = st.diffCache[h.id];
-      if (!d) w.appendChild(el("div", "notice", "Nacitavam zmeny z GitHubu…"));
-      else if (d.err) w.appendChild(el("div", "notice", "Zmeny sa nepodarilo nacitat."));
+      if (!d) w.appendChild(el("div", "notice", "Načítavam zmeny z GitHubu…"));
+      else if (d.err) w.appendChild(el("div", "notice", "Zmeny sa nepodarilo načítať."));
       else w.appendChild(renderDiff(d));
     }
     row.appendChild(w); doc.appendChild(row);
@@ -796,14 +985,20 @@ function renderHistory(view) {
 function route(keepScroll) {
   if (!DATA) return;
   var y = window.scrollY, focusId = document.activeElement && document.activeElement.id;
-  var id = (location.hash || "#uvod").slice(1), view = document.getElementById("view");
+  // Adresa: #uvod, #hladat, #overit, #historia, #<priloha> alebo #<priloha>/<id casti> (odkaz priamo na cast)
+  var raw = (location.hash || "#uvod").slice(1); try { raw = decodeURIComponent(raw); } catch (e) {}
+  var slash = raw.indexOf("/");
+  var id = slash >= 0 ? raw.slice(0, slash) : raw, view = document.getElementById("view");
   var i = DATA.sections.findIndex(function (s) { return s.id === id; });
+  CUR_SEC = i >= 0 ? DATA.sections[i] : null; CUR_PART = i >= 0 && slash >= 0 ? raw.slice(slash + 1) : "";
   view.textContent = "";
-  if (id === "historia") renderHistory(view);
+  var special = { historia: renderHistory, hladat: renderSearch, overit: renderOverit };
+  if (special[id]) special[id](view);
   else if (i < 0) renderHome(view);
   else renderSection(view, DATA.sections[i], i);
+  var ov = document.getElementById("navOverit"); if (ov) ov.textContent = "Overiť (" + overitList().length + ")";
   document.querySelectorAll("nav.main a").forEach(function (a) {
-    var cur = a.getAttribute("href") === "#" + (id === "historia" || i >= 0 ? id : "uvod");
+    var cur = a.getAttribute("href") === "#" + (special[id] || i >= 0 ? id : "uvod");
     if (cur) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
   // Na mobile je menu posuvny riadok: posun ho tak, aby bola aktualna cast viditelna
@@ -811,7 +1006,13 @@ function route(keepScroll) {
   if (act && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = act.offsetLeft - nav.offsetLeft - (nav.clientWidth - act.offsetWidth) / 2;
   navFade();
   if (keepScroll === true) { window.scrollTo(0, y); if (focusId) { var f = document.getElementById(focusId); if (f) f.focus({ preventScroll: true }); } }
-  else window.scrollTo(0, 0);
+  else {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    if (CUR_PART) {
+      goToPart(CUR_PART);
+      if (st.edit && st.edit.pid === CUR_PART) { var ta = document.querySelector(".editor textarea"); if (ta) ta.focus({ preventScroll: true }); }
+    }
+  }
   onScroll();
 }
 
@@ -827,6 +1028,16 @@ function onScroll() {
   if (!mobile || y < header.offsetHeight || y < lastY - 4 || header.contains(document.activeElement)) header.classList.remove("away");
   else if (y > lastY + 4) header.classList.add("away");
   lastY = y;
+  // Zapamataj si, kde clovek cita (cast pod hlavickou), s malym oneskorenim
+  if (CUR_SEC && !st.edit && y > 600) {
+    clearTimeout(onScroll.t);
+    onScroll.t = setTimeout(function () {
+      if (!CUR_SEC) return;
+      var top = header.classList.contains("away") ? 0 : header.getBoundingClientRect().bottom;
+      var parts = document.querySelectorAll("#view .part[id^='p-']");
+      for (var k = 0; k < parts.length; k++) if (parts[k].getBoundingClientRect().bottom > top + 80) { savePos(CUR_SEC.id, parts[k].id.slice(2)); break; }
+    }, 400);
+  }
   var onSection = !!document.querySelector("#view aside.toc details");
   toTop.textContent = onSection ? "↑ Obsah" : "↑ Hore";
   toTop.hidden = !mobile || y < window.innerHeight * 1.5;
@@ -858,6 +1069,13 @@ document.getElementById("lockForm").addEventListener("submit", function (e) {
 document.getElementById("logout").addEventListener("click", function () { forget(); DATA = null; location.hash = ""; location.reload(); });
 window.addEventListener("hashchange", function () { st.histMsg = ""; route(); });
 window.addEventListener("beforeunload", function (e) { if (st.edit && st.edit.draft !== st.edit.base) { e.preventDefault(); e.returnValue = ""; } });
+
+document.addEventListener("keydown", function (e) {
+  // "/" otvori hladanie (mimo poli na pisanie)
+  if (e.key !== "/" || !DATA || e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  e.preventDefault(); if (location.hash === "#hladat") document.getElementById("q").focus(); else location.hash = "hladat";
+});
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});
 
 var saved = recall();
 if (saved) unlock(saved, true);
