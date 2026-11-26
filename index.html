@@ -135,6 +135,13 @@ aside.toc .lbl { font-family: var(--font-mono); font-size: .72rem; letter-spacin
 aside.toc a { display: block; font-size: .86rem; line-height: 1.35; padding: .3rem .5rem; text-decoration: none; border-left: 2px solid var(--rule); }
 aside.toc a.l3 { padding-left: 1.2rem; font-size: .8rem; color: var(--muted); }
 aside.toc a:hover { border-left-color: var(--stamp); color: var(--ink); }
+aside.toc summary { list-style: none; pointer-events: none; }
+aside.toc summary::-webkit-details-marker, .more > summary::-webkit-details-marker { display: none; }
+.more { display: none; position: relative; }
+.more > summary { list-style: none; min-width: 44px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; line-height: 1; }
+.more-panel { position: absolute; right: 0; top: calc(100% + .3rem); z-index: 4; display: grid; gap: .3rem; min-width: 12rem; padding: .4rem; background: var(--sheet); border: 1px solid var(--rule); box-shadow: 0 6px 18px rgba(0, 0, 0, .18); }
+.more-panel .btn { text-align: left; }
+.to-top { display: none; }
 .pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
 .pager a { font-family: var(--font-mono); font-size: .82rem; text-decoration: none; border: 1px solid var(--rule); padding: .6rem .9rem; background: var(--sheet); }
 .pager a:hover { border-color: var(--stamp); }
@@ -176,13 +183,31 @@ aside.toc a:hover { border-left-color: var(--stamp); color: var(--ink); }
   nav.main { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -.55rem; }
   nav.main::-webkit-scrollbar { display: none; }
   nav.main a { white-space: nowrap; flex: none; padding: .7rem .55rem; }
-  .part { scroll-margin-top: 8.5rem; }
   /* Dotykove ciele aspon 44 px */
   .btn, .logout { min-height: 44px; padding: .5rem .8rem; }
   aside.toc a { padding-block: .7rem; }
   /* Pisma 16 px, aby iOS pri pisani nepriblizoval stranku */
   .editor textarea, .editor .name input, .hist-filters select { font-size: 16px; }
+  /* Hlavicka sa pri scrollovani nadol skryje, pri scrollovani nahor sa vrati */
+  header.top { transition: transform .2s ease; }
+  header.top.away { transform: translateY(-100%); }
+  .part { scroll-margin-top: 1.5rem; }
+  /* Menu: zatienene okraje naznacuju, ze sa da posuvat */
+  nav.main { -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fl, 0px), #000 calc(100% - var(--fr, 0px)), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--fl, 0px), #000 calc(100% - var(--fr, 0px)), transparent); }
+  /* Obsah stranky je zbaleny */
+  aside.toc summary { pointer-events: auto; cursor: pointer; display: flex; justify-content: space-between; align-items: center; min-height: 44px; margin: 0; padding: .5rem .8rem; background: var(--sheet); border: 1px solid var(--rule); color: var(--ink); }
+  aside.toc summary::after { content: "▾"; font-size: 1rem; color: var(--stamp); }
+  aside.toc details[open] > summary { margin-bottom: .5rem; }
+  aside.toc details[open] > summary::after { content: "▴"; }
+  /* Pri casti len Upravit, ostatne v menu ⋯ */
+  .tools .x-wide { display: none; }
+  .more { display: block; }
+  /* Tlacidlo spat na obsah */
+  .to-top { display: block; position: fixed; z-index: 6; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    min-height: 44px; padding: .5rem .9rem; font: 600 .78rem/1.2 var(--font-mono); letter-spacing: .04em; color: var(--stamp-ink); background: var(--stamp); border: 0; box-shadow: 0 4px 14px rgba(0, 0, 0, .25); cursor: pointer; }
 }
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) { header.top { transition: none; } }
 @media (max-width: 480px) { p.line { grid-template-columns: minmax(0, 1fr); gap: 0; } .entry { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
@@ -212,6 +237,7 @@ aside.toc a:hover { border-left-color: var(--stamp); color: var(--ink); }
     </div>
   </header>
   <main class="gutter" id="view"></main>
+  <button class="to-top" id="toTop" type="button" hidden>↑ Hore</button>
 </div>
 
 <script>
@@ -224,7 +250,8 @@ var AKCIE = { uprava: "Uprava", pridanie: "Nova cast", zmazanie: "Zmazanie", obn
 
 var PASSWORD = null, KEY = null, KEYSALT = null, ENC = null;
 var DATA = null, SHA = null, ONLINE = false;
-var st = { edit: null, confirmDel: null, openDiff: {}, diffCache: {}, filterSek: "", filterPart: "", busy: false };
+var st = { edit: null, confirmDel: null, openDiff: {}, diffCache: {}, filterSek: "", filterPart: "", busy: false, tocOpen: {} };
+var MOBILE = window.matchMedia("(max-width: 900px)");
 
 // ---------- Kryptografia ----------
 function b64ToBytes(s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); }
@@ -476,11 +503,15 @@ function renderSection(view, s, i) {
     doc.appendChild(add);
   }
   page.appendChild(doc);
-  var toc = el("aside", "toc"), any = false;
-  toc.appendChild(el("div", "lbl", "Na tejto stranke"));
+  // Obsah stranky: na pocitaci vzdy otvoreny, na mobile zbaleny (kym ho clovek neotvori)
+  var toc = el("aside", "toc"), any = false, det = el("details");
+  det.appendChild(el("summary", "lbl", "Na tejto stranke"));
+  det.open = !MOBILE.matches || !!st.tocOpen[s.id];
+  det.addEventListener("toggle", function () { if (MOBILE.matches) st.tocOpen[s.id] = det.open; });
+  toc.appendChild(det);
   s.parts.forEach(function (p) {
     var h = heading(p.md); if (!h || h.l < 2 || h.l > 3) return;
-    var a = el("a", "l" + h.l, h.t); a.href = "#" + s.id; a.setAttribute("data-target", "p-" + p.id); toc.appendChild(a); any = true;
+    var a = el("a", "l" + h.l, h.t); a.href = "#" + s.id; a.setAttribute("data-target", "p-" + p.id); det.appendChild(a); any = true;
   });
   page.appendChild(any ? toc : el("div"));
   view.appendChild(page);
@@ -500,12 +531,24 @@ function renderPart(s, p) {
   var tools = el("div", "tools"), last = logFor(p.id)[0];
   tools.appendChild(el("span", "who-line", last ? "Naposledy: " + (last.kto || "?") + " · " + fmtShort(last.t) : "Z povodneho spisu"));
   var n = logFor(p.id).length;
-  tools.appendChild(btn("Historia" + (n ? " (" + n + ")" : ""), "", function () { st.filterPart = p.id; st.filterSek = ""; location.hash = "historia"; }));
+  var goHist = function () { st.filterPart = p.id; st.filterSek = ""; location.hash = "historia"; };
+  var histLabel = "Historia" + (n ? " (" + n + ")" : "");
   if (ONLINE) {
     var dis = !!st.edit || st.busy;
+    var doNew = function () { startNew(s.id, p.id); }, doDel = function () { st.confirmDel = p.id; route(true); };
+    // Na pocitaci vsetky tlacidla vedla seba; na mobile (x-wide skryte) len Upravit a menu ⋯
+    tools.appendChild(btn(histLabel, "x-wide", goHist));
     tools.appendChild(btn("Upravit", "", function () { startEdit(s, p); }, dis));
-    tools.appendChild(btn("+ Pridat pod", "", function () { startNew(s.id, p.id); }, dis));
-    tools.appendChild(btn("Zmazat", "danger", function () { st.confirmDel = p.id; route(true); }, dis));
+    tools.appendChild(btn("+ Pridat pod", "x-wide", doNew, dis));
+    tools.appendChild(btn("Zmazat", "danger x-wide", doDel, dis));
+    var more = el("details", "more"), sum = el("summary", "btn", "⋯"), panel = el("div", "more-panel");
+    sum.setAttribute("aria-label", "Dalsie moznosti");
+    panel.appendChild(btn(histLabel, "", goHist));
+    panel.appendChild(btn("+ Pridat pod", "", doNew, dis));
+    panel.appendChild(btn("Zmazat", "danger", doDel, dis));
+    more.appendChild(sum); more.appendChild(panel); tools.appendChild(more);
+  } else {
+    tools.appendChild(btn(histLabel, "", goHist));
   }
   art.appendChild(tools);
   if (st.confirmDel === p.id) {
@@ -766,13 +809,48 @@ function route(keepScroll) {
   // Na mobile je menu posuvny riadok: posun ho tak, aby bola aktualna cast viditelna
   var nav = document.getElementById("nav"), act = nav.querySelector('a[aria-current="page"]');
   if (act && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = act.offsetLeft - nav.offsetLeft - (nav.clientWidth - act.offsetWidth) / 2;
+  navFade();
   if (keepScroll === true) { window.scrollTo(0, y); if (focusId) { var f = document.getElementById(focusId); if (f) f.focus({ preventScroll: true }); } }
   else window.scrollTo(0, 0);
+  onScroll();
 }
 
+// ---------- Mobil: hlavicka, menu, tlacidlo Hore ----------
+var header = document.querySelector("header.top"), toTop = document.getElementById("toTop"), lastY = 0;
+function navFade() {
+  var nav = document.getElementById("nav"), max = nav.scrollWidth - nav.clientWidth;
+  nav.style.setProperty("--fl", nav.scrollLeft > 2 ? "1.5rem" : "0px");
+  nav.style.setProperty("--fr", max > 2 && nav.scrollLeft < max - 2 ? "1.5rem" : "0px");
+}
+function onScroll() {
+  var y = window.scrollY, mobile = MOBILE.matches;
+  if (!mobile || y < header.offsetHeight || y < lastY - 4 || header.contains(document.activeElement)) header.classList.remove("away");
+  else if (y > lastY + 4) header.classList.add("away");
+  lastY = y;
+  var onSection = !!document.querySelector("#view aside.toc details");
+  toTop.textContent = onSection ? "↑ Obsah" : "↑ Hore";
+  toTop.hidden = !mobile || y < window.innerHeight * 1.5;
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+document.getElementById("nav").addEventListener("scroll", navFade, { passive: true });
+window.addEventListener("resize", navFade);
+MOBILE.addEventListener("change", function () { if (DATA && !st.edit) route(true); });
+toTop.addEventListener("click", function () {
+  // Na strankach s obsahom otvor obsah, aby sa dalo hned vybrat dalsiu kapitolu
+  var det = document.querySelector("#view aside.toc details");
+  if (det) { det.open = true; var t = det.closest("aside"); window.scrollTo(0, Math.max(0, t.getBoundingClientRect().top + window.scrollY - header.offsetHeight - 16)); }
+  else window.scrollTo(0, 0);
+});
+
 document.addEventListener("click", function (e) {
+  // Zatvor otvorene menu ⋯ pri kliknuti mimo neho
+  document.querySelectorAll("details.more[open]").forEach(function (d) { if (!d.contains(e.target) || e.target.closest(".more-panel button")) d.open = false; });
   var a = e.target.closest("a[data-target]"); if (!a) return;
-  e.preventDefault(); var t = document.getElementById(a.getAttribute("data-target")); if (t) t.scrollIntoView();
+  e.preventDefault(); var t = document.getElementById(a.getAttribute("data-target")); if (!t) return;
+  // Na mobile po vybere zbal obsah a skry hlavicku, aby bol nadpis hore na obrazovke
+  var det = a.closest("details");
+  if (det && MOBILE.matches) { det.open = false; header.classList.add("away"); }
+  t.scrollIntoView();
 });
 document.getElementById("lockForm").addEventListener("submit", function (e) {
   e.preventDefault(); unlock(document.getElementById("pw").value, false, document.getElementById("remember").checked);
