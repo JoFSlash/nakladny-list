@@ -170,6 +170,19 @@ aside.toc a:hover { border-left-color: var(--stamp); color: var(--ink); }
   .page { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
   aside.toc { position: static; max-height: none; order: -1; }
   .stamp { position: static; display: inline-block; margin-top: 1.2rem; }
+  /* Hlavicka: nazov, stav a Zamknut v prvom riadku, menu ako jeden posuvny riadok pod nimi; nie je prilepena */
+  header.top { position: static; }
+  .top-in { gap: .4rem .75rem; }
+  .status { margin-left: auto; }
+  nav.main { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -.55rem; }
+  nav.main::-webkit-scrollbar { display: none; }
+  nav.main a { white-space: nowrap; flex: none; padding: .7rem .55rem; }
+  .part { scroll-margin-top: 1rem; }
+  /* Dotykove ciele aspon 44 px */
+  .btn, .logout { min-height: 44px; padding: .5rem .8rem; }
+  aside.toc a { padding-block: .7rem; }
+  /* Pisma 16 px, aby iOS pri pisani nepriblizoval stranku */
+  .editor textarea, .editor .name input, .hist-filters select { font-size: 16px; }
 }
 @media (max-width: 480px) { p.line { grid-template-columns: minmax(0, 1fr); gap: 0; } .entry { grid-template-columns: minmax(0, 1fr); } }
 </style>
@@ -751,6 +764,9 @@ function route(keepScroll) {
     var cur = a.getAttribute("href") === "#" + (id === "historia" || i >= 0 ? id : "uvod");
     if (cur) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
+  // Na mobile je menu posuvny riadok: posun ho tak, aby bola aktualna cast viditelna
+  var nav = document.getElementById("nav"), act = nav.querySelector('a[aria-current="page"]');
+  if (act && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = act.offsetLeft - nav.offsetLeft - (nav.clientWidth - act.offsetWidth) / 2;
   if (keepScroll === true) { window.scrollTo(0, y); if (focusId) { var f = document.getElementById(focusId); if (f) f.focus({ preventScroll: true }); } }
   else window.scrollTo(0, 0);
 }
