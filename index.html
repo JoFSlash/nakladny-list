@@ -170,14 +170,13 @@ aside.toc a:hover { border-left-color: var(--stamp); color: var(--ink); }
   .page { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
   aside.toc { position: static; max-height: none; order: -1; }
   .stamp { position: static; display: inline-block; margin-top: 1.2rem; }
-  /* Hlavicka: nazov, stav a Zamknut v prvom riadku, menu ako jeden posuvny riadok pod nimi; nie je prilepena */
-  header.top { position: static; }
+  /* Hlavicka: nazov, stav a Zamknut v prvom riadku, menu ako jeden posuvny riadok pod nimi; ostava pripnuta hore */
   .top-in { gap: .4rem .75rem; }
   .status { margin-left: auto; }
   nav.main { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -.55rem; }
   nav.main::-webkit-scrollbar { display: none; }
   nav.main a { white-space: nowrap; flex: none; padding: .7rem .55rem; }
-  .part { scroll-margin-top: 1rem; }
+  .part { scroll-margin-top: 8.5rem; }
   /* Dotykove ciele aspon 44 px */
   .btn, .logout { min-height: 44px; padding: .5rem .8rem; }
   aside.toc a { padding-block: .7rem; }
