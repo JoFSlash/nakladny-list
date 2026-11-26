@@ -62,7 +62,9 @@ nav.main { display: flex; flex-wrap: wrap; gap: 2px; flex: 1; min-width: 0; }
 nav.main a { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .04em; text-decoration: none; padding: .35rem .55rem; border-bottom: 2px solid transparent; }
 nav.main a:hover { background: var(--sheet); }
 nav.main a[aria-current="page"] { border-bottom-color: var(--stamp); color: var(--stamp); font-weight: 600; }
-.logout { font-family: var(--font-mono); font-size: .75rem; background: none; border: 1px solid var(--rule); color: var(--muted); padding: .3rem .6rem; cursor: pointer; }
+.search-link { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--font-mono); font-size: .78rem; text-decoration: none; border: 1px solid var(--rule); color: var(--ink); padding: .3rem .7rem; }
+.search-link svg { width: 1em; height: 1em; }
+.search-link:hover, .search-link[aria-current="page"] { border-color: var(--stamp); color: var(--stamp); }
 .status { font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
 .status.ok { color: var(--ins-ink); }
 .status.warn { color: var(--flag); }
@@ -213,12 +215,13 @@ mark.hl { background: var(--flag-bg); color: var(--ink); padding: 0; }
   .stamp { position: static; display: inline-block; margin-top: 1.2rem; }
   /* Hlavicka: nazov, stav a Zamknut v prvom riadku, menu ako jeden posuvny riadok pod nimi; ostava pripnuta hore */
   .top-in { gap: .4rem .75rem; }
-  .status { margin-left: auto; }
+  .search-link { margin-left: auto; }
   nav.main { order: 3; flex: 1 1 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -.55rem; }
   nav.main::-webkit-scrollbar { display: none; }
   nav.main a { white-space: nowrap; flex: none; padding: .7rem .55rem; }
   /* Dotykove ciele aspon 44 px */
-  .btn, .logout { min-height: 44px; padding: .5rem .8rem; }
+  .btn { min-height: 44px; padding: .5rem .8rem; }
+  .search-link { min-height: 44px; padding: .5rem .9rem; font-size: .85rem; }
   aside.toc a { padding-block: .7rem; }
   /* Pisma 16 px, aby iOS pri pisani nepriblizoval stranku */
   .editor textarea, .editor .name input, .hist-filters select { font-size: 16px; }
@@ -268,7 +271,7 @@ mark.hl { background: var(--flag-bg); color: var(--ink); padding: 0; }
       <a class="brand" href="#uvod" id="brand"></a>
       <nav class="main" id="nav" aria-label="Časti"></nav>
       <span class="status" id="status"></span>
-      <button class="logout" id="logout" type="button">Zamknúť</button>
+      <a class="search-link" href="#hladat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>Hľadať</a>
     </div>
   </header>
   <main class="gutter" id="view"></main>
@@ -442,7 +445,11 @@ function findPart(data, pid) {
   }
   return null;
 }
-function setStatus(text, cls) { var s = document.getElementById("status"); s.textContent = text; s.className = "status" + (cls ? " " + cls : ""); }
+function setStatus(text, cls) {
+  var s = document.getElementById("status"); clearTimeout(setStatus.t);
+  s.textContent = text; s.className = "status" + (cls ? " " + cls : "");
+  if (cls === "ok") setStatus.t = setTimeout(function () { s.textContent = ""; }, 2500);
+}
 function errText(err) {
   var c = err && err.code;
   if (c === "gh_401" || c === "gh_403") return "GitHub odmietol prístup (token vypršal alebo nemá práva). Napíš správcovi webu.";
@@ -480,7 +487,7 @@ async function goOnline() {
   try {
     var latest = await readFileAt(DATA.gh.branch);
     DATA = keepToken(latest.data); SHA = latest.sha; ONLINE = true;
-    setStatus("Môžeš upravovať", "ok");
+    setStatus("");
     if (!st.edit) route(true);
   } catch (e) {
     ONLINE = false;
@@ -492,7 +499,6 @@ async function goOnline() {
 function buildNav() {
   var nav = document.getElementById("nav"); nav.textContent = "";
   var a0 = el("a", null, "Úvod"); a0.href = "#uvod"; nav.appendChild(a0);
-  var aq = el("a", null, "Hľadať"); aq.href = "#hladat"; nav.appendChild(aq);
   DATA.sections.forEach(function (s) { var a = el("a", null, s.label); a.href = "#" + s.id; nav.appendChild(a); });
   var ao = el("a"); ao.href = "#overit"; ao.id = "navOverit"; nav.appendChild(ao);
   var ah = el("a", null, "História"); ah.href = "#historia"; nav.appendChild(ah);
@@ -997,7 +1003,7 @@ function route(keepScroll) {
   else if (i < 0) renderHome(view);
   else renderSection(view, DATA.sections[i], i);
   var ov = document.getElementById("navOverit"); if (ov) ov.textContent = "Overiť (" + overitList().length + ")";
-  document.querySelectorAll("nav.main a").forEach(function (a) {
+  document.querySelectorAll("nav.main a, a.search-link").forEach(function (a) {
     var cur = a.getAttribute("href") === "#" + (special[id] || i >= 0 ? id : "uvod");
     if (cur) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
@@ -1066,7 +1072,6 @@ document.addEventListener("click", function (e) {
 document.getElementById("lockForm").addEventListener("submit", function (e) {
   e.preventDefault(); unlock(document.getElementById("pw").value, false, document.getElementById("remember").checked);
 });
-document.getElementById("logout").addEventListener("click", function () { forget(); DATA = null; location.hash = ""; location.reload(); });
 window.addEventListener("hashchange", function () { st.histMsg = ""; route(); });
 window.addEventListener("beforeunload", function (e) { if (st.edit && st.edit.draft !== st.edit.base) { e.preventDefault(); e.returnValue = ""; } });
 
